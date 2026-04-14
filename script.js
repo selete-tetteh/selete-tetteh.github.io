@@ -21,22 +21,29 @@ const IS_ADMIN = new URLSearchParams(window.location.search).has('admin');
   const FIRST_KEY = "san_first_visit";
   const LOG_KEY = "san_visit_log";
 
-  // Increment count
-  let count = parseInt(localStorage.getItem(COUNT_KEY) || "0", 10) + 1;
-  localStorage.setItem(COUNT_KEY, count);
+  // Read existing count — only increment for real (non-admin) visitors
+  let count;
+  if (IS_ADMIN) {
+    // Admin view: just read the current count, don't touch it
+    count = parseInt(localStorage.getItem(COUNT_KEY) || "0", 10);
+  } else {
+    // Real visitor: increment and save
+    count = parseInt(localStorage.getItem(COUNT_KEY) || "0", 10) + 1;
+    localStorage.setItem(COUNT_KEY, count);
 
-  // Record first visit date
-  if (!localStorage.getItem(FIRST_KEY)) {
-    localStorage.setItem(FIRST_KEY, new Date().toISOString());
+    // Record first visit date
+    if (!localStorage.getItem(FIRST_KEY)) {
+      localStorage.setItem(FIRST_KEY, new Date().toISOString());
+    }
+
+    // Append to visit log (max 100 entries)
+    try {
+      let log = JSON.parse(localStorage.getItem(LOG_KEY) || "[]");
+      log.push({ time: new Date().toISOString(), visit: count });
+      if (log.length > 100) log = log.slice(-100);
+      localStorage.setItem(LOG_KEY, JSON.stringify(log));
+    } catch (_) { }
   }
-
-  // Append to visit log (max 100 entries)
-  try {
-    let log = JSON.parse(localStorage.getItem(LOG_KEY) || "[]");
-    log.push({ time: new Date().toISOString(), visit: count });
-    if (log.length > 100) log = log.slice(-100);
-    localStorage.setItem(LOG_KEY, JSON.stringify(log));
-  } catch (_) { }
 
   // Format first visit date
   const firstISO = localStorage.getItem(FIRST_KEY);
