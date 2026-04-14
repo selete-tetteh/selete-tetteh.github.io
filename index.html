@@ -1,140 +1,314 @@
-<!DOCTYPE HTML>
-<!--
-	Strata by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
-<html>
-	<head>
-		<title>Data Analyst Portfolio</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="assets/css/main.css" />
-	</head>
-	<body class="is-preload">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Selete Akpotosu-Nartey | Data Analytics Portfolio</title>
+  <meta name="description" content="Data analytics portfolio of Selete Akpotosu-Nartey — showcasing projects in Python, SQL, R, and data visualization." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
 
-		<!-- Header -->
-			<header id="header">
-				<div class="inner">
-					<!--<a href="#" class="image avatar"><img src="images/avatar.jpg" alt="" /></a>-->
-					<h1><strong>Analyst Portfolio</strong></h1>
-					<p>Data analyst skilled in Python, R, Tableau, and SQL.
-					Specializes in driving data-based decisions through insights gained from data visualization, statistical analysis, and data modeling.</p>
-				</div>
-			</header>
+  <!-- ── NAVBAR ── -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-brand">
+      <span class="brand-dot"></span>
+      <span>Selete<span class="brand-accent">.</span></span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#about" class="nav-link">About</a></li>
+      <li><a href="#projects" class="nav-link">Projects</a></li>
+      <li><a href="#visitors" class="nav-link">Visitors</a></li>
+      <li><a href="#contact" class="nav-link">Contact</a></li>
+    </ul>
+    <button class="nav-cta" onclick="document.getElementById('projects').scrollIntoView({behavior:'smooth'})">View Work</button>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
 
-		<!-- Main -->
-			<div id="main">
+  <!-- mobile menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#about" class="mobile-link">About</a>
+    <a href="#projects" class="mobile-link">Projects</a>
+    <a href="#visitors" class="mobile-link">Visitors</a>
+    <a href="#contact" class="mobile-link">Contact</a>
+  </div>
 
-				<!-- One -->
-					<section id="one">
-						<a href="https://github.com/selete-tetteh/News-Recommendation-System" target="_blank" class="image main"><img src="images/thumbs/pile-of-newspapers_full.png" width="370" 
-							height="217" alt="" /></a>
-						<header class="major">
-							<h2><a href="https://github.com/selete-tetteh/News-Recommendation-System" target="_blank">News Recommendation System<br />
-							</a></h2>
-						</header>
-						<p>This project details a text-based article recommendation system. This system utilizes natural language processing techniques such as TF-IDF vectorization and K-Means clustering to group articles based on their text similarity. By analyzing the content of the articles, the system is able to recommend similar articles to users. The code is written in Python and makes use of popular libraries such as pandas, scikit-learn, and nltk. Through data preprocessing, clustering, and cosine similarity calculation, this system provides personalized article recommendations to enhance user experience and engagement on news websites.</p>
-						<ul class="actions">
-							<li><a href="https://github.com/selete-tetteh/News-Recommendation-System" target="_blank" class="button">View Project</a></li>
-						</ul>
-					</section>
+  <!-- ── HERO ── -->
+  <section class="hero" id="home">
+    <div class="hero-bg">
+      <img src="hero_bg.png" alt="Data network background" class="hero-img" />
+      <div class="hero-overlay"></div>
+    </div>
 
-				<!-- Two -->
-					<section id="two">
-						<h2>Other Works</h2>
-						<div class="row">
-							<article class="col-6 col-12-xsmall">
-								<a href="https://github.com/selete-tetteh/Housing-Project" target="_blank" class="image main"><img src="images/thumbs/Housing-photo.png" width="370" 
-									height="217" alt="" /></a>
-								<h3><a href="https://github.com/selete-tetteh/Housing-Project" target="_blank">Housing Sales Price Prediction<br />
-								</a></h3>
-								<p>This project involed cleaning, preparing and standardising data in SQL before using R in creating a model to predict sales price of houses given certain variables</p>
-							</article>
-							
-							<article class="col-6 col-12-xsmall">
-								<a href="https://github.com/selete-tetteh/Plato-s-Pizza" target="_blank" class="image main"><img src="images/thumbs/pizza.jpg"width="370" 
-									height="217"  alt="" /></a>
-								<h3><a href="https://github.com/selete-tetteh/Plato-s-Pizza" target="_blank">Pizza Store Analysis<br />
-								</a></h3>								
-								<p>This project was inspired by Maven Analytics' Pizza Challenge. This project sought to help the restaurant owner maximise profits from the restaurant. The first part of the project involved analysing the data in SQL and then visualising the results in <a href="https://public.tableau.com/app/profile/selete/viz/Pizzashopanalysis/Dashboard1?publish=yes" target="_blank">Tableau.<br />
-								</a></p>
-							</article>
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="pulse-dot"></span>
+        <span id="visitorBadge">Loading visitors…</span>
+      </div>
+      <h1 class="hero-title">
+        Turning <span class="gradient-text">Raw Data</span><br/>Into Real Insights
+      </h1>
+      <p class="hero-sub">
+        Hi, I'm <strong>Selete Akpotosu-Nartey</strong> — a data analytics enthusiast<br />
+        building projects at the intersection of data, story, and impact.
+      </p>
+      <div class="hero-actions">
+        <button class="btn-primary" onclick="document.getElementById('projects').scrollIntoView({behavior:'smooth'})">
+          Explore My Projects
+        </button>
+        <a class="btn-ghost" href="https://github.com/selete-tetteh" target="_blank" rel="noopener">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/></svg>
+          GitHub Profile
+        </a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><span class="stat-num">5</span><span class="stat-label">Projects</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat"><span class="stat-num">3+</span><span class="stat-label">Tools Used</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat"><span class="stat-num" id="statVisitors">—</span><span class="stat-label">Visitors</span></div>
+      </div>
+    </div>
 
-							<!--
-							<article class="col-6 col-12-xsmall work-item">
-								<a href="images/fulls/03.jpg" class="image fit thumb"><img src="images/thumbs/03.jpg" alt="" /></a>
-								<h3><a href="" target="_blank">Housing Sales Price Prediction<br />
-								</a></h3>
-								<p>Lorem ipsum dolor sit amet nisl sed nullam feugiat.</p>
-							</article>
-							-->
-							
-							<!--
-							<article class="col-6 col-12-xsmall work-item">
-								<a href="images/fulls/05.jpg" class="image fit thumb"><img src="images/thumbs/05.jpg" alt="" /></a>
-								<h3>Nunc enim commodo aliquet</h3>
-								<p>Lorem ipsum dolor sit amet nisl sed nullam feugiat.</p>
-							</article>
-							<article class="col-6 col-12-xsmall work-item">
-								<a href="images/fulls/06.jpg" class="image fit thumb"><img src="images/thumbs/06.jpg" alt="" /></a>
-								<h3>Risus ornare lacinia</h3>
-								<p>Lorem ipsum dolor sit amet nisl sed nullam feugiat.</p>
-							</article>
-							-->
+    <div class="scroll-indicator">
+      <div class="scroll-line"></div>
+      <span>Scroll</span>
+    </div>
+  </section>
 
-						<!--	
-						</div>
-						<ul class="actions">
-							<li><a href="#" class="button">Full Portfolio</a></li>
-						</ul>
-						-->
-					</section>
+  <!-- ── ABOUT ── -->
+  <section class="about" id="about">
+    <div class="container">
+      <div class="section-label">About Me</div>
+      <h2 class="section-title">The Person Behind the Data</h2>
+      <div class="about-grid">
+        <div class="about-text">
+          <p>
+            I'm <strong>Selete Akpotosu-Nartey</strong>, a data analytics enthusiast passionate
+            about extracting meaningful stories from complex datasets. From predicting customer
+            behaviour to analysing e-commerce performance, I love asking the right questions
+            and letting the data answer them.
+          </p>
+          <p>
+            Whether it's cleaning a messy SQL database, building a machine learning recommendation
+            engine, or crafting an insightful visual dashboard — I approach every project with
+            curiosity and rigour.
+          </p>
+          <a class="btn-ghost" href="https://github.com/selete-tetteh" target="_blank" rel="noopener">
+            View All Projects on GitHub →
+          </a>
+        </div>
+        <div class="skills-grid">
+          <div class="skill-card reveal">
+            <div class="skill-icon">🐍</div>
+            <div class="skill-name">Python</div>
+            <div class="skill-desc">Pandas, Scikit-learn, Jupyter</div>
+          </div>
+          <div class="skill-card reveal">
+            <div class="skill-icon">🗄️</div>
+            <div class="skill-name">SQL</div>
+            <div class="skill-desc">Data querying & modelling</div>
+          </div>
+          <div class="skill-card reveal">
+            <div class="skill-icon">📊</div>
+            <div class="skill-name">R</div>
+            <div class="skill-desc">Statistical modelling & viz</div>
+          </div>
+          <div class="skill-card reveal">
+            <div class="skill-icon">📈</div>
+            <div class="skill-name">Visualization</div>
+            <div class="skill-desc">Plotly, ggplot2, dashboards</div>
+          </div>
+          <div class="skill-card reveal">
+            <div class="skill-icon">🤖</div>
+            <div class="skill-name">Machine Learning</div>
+            <div class="skill-desc">Clustering, forecasting, NLP</div>
+          </div>
+          <div class="skill-card reveal">
+            <div class="skill-icon">🔍</div>
+            <div class="skill-name">Data Cleaning</div>
+            <div class="skill-desc">ETL, wrangling, exploration</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-					<!-- Three
-					<section id="three">
-						<h2>Get In Touch</h2>
-						<p>Accumsan pellentesque commodo blandit enim arcu non at amet id arcu magna. Accumsan orci faucibus id eu lorem semper nunc nisi lorem vulputate lorem neque lorem ipsum dolor.</p>
-						<div class="row">
-							<div class="col-8 col-12-small">
-								<form method="post" action="#">
-									<div class="row gtr-uniform gtr-50">
-										<div class="col-6 col-12-xsmall"><input type="text" name="name" id="name" placeholder="Name" /></div>
-										<div class="col-6 col-12-xsmall"><input type="email" name="email" id="email" placeholder="Email" /></div>
-										<div class="col-12"><textarea name="message" id="message" placeholder="Message" rows="4"></textarea></div>
-									</div>
-								</form>
-								<ul class="actions">
-									<li><input type="submit" value="Send Message" /></li>
-								</ul>
-							</div>
-						</div>
-					</section>
-					-->
-				
+  <!-- ── PROJECTS ── -->
+  <section class="projects" id="projects">
+    <div class="container">
+      <div class="section-label">Portfolio</div>
+      <h2 class="section-title">Featured Projects</h2>
+      <p class="section-sub">A selection of real-world analytics projects — click any card to explore the code.</p>
 
-			</div>
+      <div class="filter-bar">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="python">Python</button>
+        <button class="filter-btn" data-filter="sql">SQL</button>
+        <button class="filter-btn" data-filter="r">R</button>
+        <button class="filter-btn" data-filter="ml">ML</button>
+      </div>
 
-		<!-- Footer -->
-			<footer id="footer">
-				<div class="inner">
-					<ul class="icons">
-						<li><a href="https://github.com/selete-tetteh" target="_blank" class="icon brands fa-github"><span class="label">Github</span></a></li>
-						<li><a href="https://www.linkedin.com/in/selete-akpotosu-nartey/" target="_blank" class="icon brands fa-linkedin"><span class="label">linkedIn</span></a></li>
-					</ul>
-					<ul class="copyright">
-						<li>&copy; Untitled</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
-					</ul>
-				</div>
-			</footer>
+      <div class="projects-grid" id="projectsGrid">
 
-		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/jquery.poptrox.min.js"></script>
-			<script src="assets/js/browser.min.js"></script>
-			<script src="assets/js/breakpoints.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<script src="assets/js/main.js"></script>
+        <!-- Project 1 -->
+        <a class="project-card reveal" href="https://github.com/selete-tetteh/gamezone-analytics" target="_blank" rel="noopener" data-tags="python ml">
+          <div class="card-glow"></div>
+          <div class="card-header">
+            <div class="card-icon">🎮</div>
+            <div class="card-meta">
+              <span class="card-lang">Python</span>
+              <span class="card-lang ml-tag">ML</span>
+            </div>
+          </div>
+          <h3 class="card-title">Gamezone Analytics</h3>
+          <p class="card-desc">End-to-end e-commerce data science project — Customer Lifetime Value modelling, demand forecasting, and churn survival analysis.</p>
+          <div class="card-tags">
+            <span class="tag">CLV Modelling</span>
+            <span class="tag">Churn Analysis</span>
+            <span class="tag">Forecasting</span>
+          </div>
+          <div class="card-arrow">View on GitHub →</div>
+        </a>
 
-	</body>
+        <!-- Project 2 -->
+        <a class="project-card reveal" href="https://github.com/selete-tetteh/News-Recommendation-System" target="_blank" rel="noopener" data-tags="python ml">
+          <div class="card-glow"></div>
+          <div class="card-header">
+            <div class="card-icon">📰</div>
+            <div class="card-meta">
+              <span class="card-lang">Python</span>
+              <span class="card-lang ml-tag">ML</span>
+            </div>
+          </div>
+          <h3 class="card-title">News Recommendation System</h3>
+          <p class="card-desc">A content-based recommendation engine built with Python and Jupyter Notebook that suggests relevant news articles to users.</p>
+          <div class="card-tags">
+            <span class="tag">NLP</span>
+            <span class="tag">Recommender</span>
+            <span class="tag">Jupyter</span>
+          </div>
+          <div class="card-arrow">View on GitHub →</div>
+        </a>
+
+        <!-- Project 3 -->
+        <a class="project-card reveal" href="https://github.com/selete-tetteh/Housing-Project" target="_blank" rel="noopener" data-tags="sql r">
+          <div class="card-glow"></div>
+          <div class="card-header">
+            <div class="card-icon">🏠</div>
+            <div class="card-meta">
+              <span class="card-lang sql-tag">SQL</span>
+              <span class="card-lang r-tag">R</span>
+            </div>
+          </div>
+          <h3 class="card-title">Housing Project</h3>
+          <p class="card-desc">Comprehensive data cleaning using SQL and advanced statistical data modelling in R to analyse housing market trends.</p>
+          <div class="card-tags">
+            <span class="tag">Data Cleaning</span>
+            <span class="tag">Modelling</span>
+            <span class="tag">Statistics</span>
+          </div>
+          <div class="card-arrow">View on GitHub →</div>
+        </a>
+
+        <!-- Project 4 -->
+        <a class="project-card reveal" href="https://github.com/selete-tetteh/Plato-s-Pizza" target="_blank" rel="noopener" data-tags="sql">
+          <div class="card-glow"></div>
+          <div class="card-header">
+            <div class="card-icon">🍕</div>
+            <div class="card-meta">
+              <span class="card-lang sql-tag">SQL</span>
+            </div>
+          </div>
+          <h3 class="card-title">Plato's Pizza Analysis</h3>
+          <p class="card-desc">Deep-dive data analysis on a pizza restaurant dataset using SQL — uncovering peak hours, best-sellers, and revenue insights.</p>
+          <div class="card-tags">
+            <span class="tag">SQL Queries</span>
+            <span class="tag">Business Analytics</span>
+            <span class="tag">Insights</span>
+          </div>
+          <div class="card-arrow">View on GitHub →</div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── VISITOR COUNTER ── -->
+  <section class="visitor-section" id="visitors">
+    <div class="visitor-bg"></div>
+    <div class="container visitor-inner">
+      <div class="visitor-icon">👀</div>
+      <h2 class="visitor-count" id="visitorCount">—</h2>
+      <p class="visitor-label">people have explored this portfolio</p>
+      <p class="visitor-note">Visitor count is tracked locally in your browser.</p>
+      <div class="visitor-bar">
+        <div class="visitor-fill" id="visitorFill"></div>
+      </div>
+      <p class="visitor-since">Since <span id="firstVisitDate">—</span></p>
+    </div>
+  </section>
+
+  <!-- ── CONTACT ── -->
+  <section class="contact" id="contact">
+    <div class="container">
+      <div class="section-label">Get In Touch</div>
+      <h2 class="section-title">Let's Connect</h2>
+      <p class="section-sub">Interested in collaborating, have feedback, or just want to say hi? Reach out!</p>
+
+      <div class="contact-grid">
+        <div class="contact-links">
+          <a class="contact-card reveal" href="https://github.com/selete-tetteh" target="_blank" rel="noopener">
+            <div class="contact-card-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/></svg>
+            </div>
+            <div class="contact-card-text">
+              <div class="contact-card-title">GitHub</div>
+              <div class="contact-card-sub">github.com/selete-tetteh</div>
+            </div>
+            <div class="contact-card-arrow">→</div>
+          </a>
+        </div>
+
+        <form class="contact-form reveal" id="contactForm" onsubmit="handleFormSubmit(event)">
+          <div class="form-group">
+            <label for="name">Your Name</label>
+            <input type="text" id="name" name="name" placeholder="Jane Smith" autocomplete="name" />
+            <span class="field-error" id="nameError"></span>
+          </div>
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" placeholder="jane@example.com" autocomplete="email" />
+            <span class="field-error" id="emailError"></span>
+          </div>
+          <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" rows="4" placeholder="Hi Selete, I saw your project and…"></textarea>
+            <span class="field-error" id="messageError"></span>
+          </div>
+          <button type="submit" class="btn-primary full-width" id="submitBtn">Send Message</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">Selete<span class="brand-accent">.</span></div>
+      <p class="footer-copy">© 2026 Selete Akpotosu-Nartey · Built with purpose & passion</p>
+      <a href="https://github.com/selete-tetteh" target="_blank" rel="noopener" class="footer-link">GitHub</a>
+    </div>
+  </footer>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script src="script.js"></script>
+</body>
 </html>
