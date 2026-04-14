@@ -224,18 +224,20 @@ function handleFormSubmit(e) {
 
   if (!valid) return;
 
-  // Simulate sending
-  btn.textContent = "Sending…";
-  btn.disabled = true;
+  // Open mailto link so the message lands in Selete's inbox
+  const subject = encodeURIComponent(`Portfolio message from ${name.value.trim()}`);
+  const body = encodeURIComponent(
+    `Name: ${name.value.trim()}\nEmail: ${email.value.trim()}\n\nMessage:\n${message.value.trim()}`
+  );
+  window.location.href = `mailto:narteykwasi@gmail.com?subject=${subject}&body=${body}`;
 
+  // Reset form after a short delay
   setTimeout(() => {
-    btn.textContent = "Send Message";
-    btn.disabled = false;
     name.value = "";
     email.value = "";
     message.value = "";
-    showToast("✅ Message sent! I'll be in touch soon.");
-  }, 1200);
+    showToast("✅ Your email app should open — just hit Send!");
+  }, 500);
 }
 
 

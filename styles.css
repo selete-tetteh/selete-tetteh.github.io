@@ -703,6 +703,14 @@ button { cursor: pointer; font-family: inherit; border: none; outline: none; }
   color: var(--blue);
   flex-shrink: 0;
 }
+.contact-card-icon.linkedin-icon {
+  background: rgba(10, 102, 194, 0.15);
+  color: #0a66c2;
+}
+.contact-card-icon.email-icon {
+  background: rgba(0, 229, 255, 0.1);
+  color: var(--cyan);
+}
 
 .contact-card-text { flex: 1; }
 .contact-card-title { font-weight: 700; font-size: 0.95rem; }
@@ -773,6 +781,12 @@ button { cursor: pointer; font-family: inherit; border: none; outline: none; }
 
 .footer-copy { font-size: 0.8rem; color: var(--text-muted); }
 
+.footer-links {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.footer-dot { color: var(--text-muted); font-size: 0.8rem; }
 .footer-link {
   font-size: 0.85rem;
   font-weight: 500;
