@@ -85,20 +85,58 @@ const IS_ADMIN = new URLSearchParams(window.location.search).has('admin');
       return;
     }
 
-    // Fetch real global count from GoatCounter API
-    fetch("https://selete-portfolio.goatcounter.com/counter/%2F.json")
-      .then(r => r.json())
-      .then(data => {
-        // GoatCounter returns count as a formatted string e.g. "1,234"
-        const count = parseInt((data.count || "0").replace(/,/g, ""), 10);
-        renderUI(count);
-      })
-      .catch(() => {
-        // API unreachable — prompt to check GoatCounter dashboard directly
-        const badge = document.getElementById("visitorBadge");
-        if (badge) badge.textContent = "Check goatcounter.com for live stats";
-        renderUI(0);
-      });
+    // GoatCounter's /counter/ endpoint blocks browser fetch() due to CORS.
+    // The workaround: inject their official <script> counter embed, which
+    // writes the count into any element with class "gc-counter__value".
+    // We create a hidden element, let GoatCounter populate it, then read it.
+    const probe = document.createElement("span");
+    probe.className = "gc-counter__value";
+    probe.style.display = "none";
+    probe.setAttribute("data-path", "/");
+    document.body.appendChild(probe);
+
+    const script = document.createElement("script");
+    script.src = "https://selete-portfolio.goatcounter.com/count.js";
+
+    // Fallback: if the script fails or takes too long, link to dashboard
+    const timeout = setTimeout(() => {
+      const badge = document.getElementById("visitorBadge");
+      if (badge && badge.textContent === "Loading visitors…") {
+        badge.textContent = "View stats →";
+        badge.style.cursor = "pointer";
+        badge.onclick = () => window.open("https://selete-portfolio.goatcounter.com", "_blank");
+      }
+    }, 5000);
+
+    script.onload = () => {
+      // Give GoatCounter a moment to populate the injected element
+      setTimeout(() => {
+        clearTimeout(timeout);
+        const rawText = probe.textContent.trim();
+        const count = parseInt(rawText.replace(/,/g, ""), 10);
+        document.body.removeChild(probe);
+        if (!isNaN(count) && count > 0) {
+          renderUI(count);
+        } else {
+          // Script loaded but count not written — GoatCounter API format may
+          // have changed. Fall back to a direct dashboard link.
+          const badge = document.getElementById("visitorBadge");
+          if (badge) {
+            badge.innerHTML = '<a href="https://selete-portfolio.goatcounter.com" target="_blank" rel="noopener" style="color:inherit">Open GoatCounter dashboard →</a>';
+          }
+          renderUI(0);
+        }
+      }, 1500);
+    };
+
+    script.onerror = () => {
+      clearTimeout(timeout);
+      const badge = document.getElementById("visitorBadge");
+      if (badge) badge.textContent = "Open dashboard at goatcounter.com";
+      renderUI(0);
+    };
+
+    document.head.appendChild(script);
   }
 
   if (document.readyState === "loading") {
