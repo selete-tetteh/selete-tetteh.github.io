@@ -30,9 +30,10 @@ const IS_ADMIN = new URLSearchParams(window.location.search).has('admin');
     ? new Date(firstISO).toLocaleDateString("en-GB", { month: "long", day: "numeric", year: "numeric" })
     : "—";
 
-  // Animate a number counting up smoothly
+  // Animate a number counting up smoothly (works for 0 too)
   function animateCount(el, target, duration = 1500) {
-    if (!el || !target) return;
+    if (!el || target === null || target === undefined) return;
+    if (target === 0) { el.textContent = "0"; return; }
     const start = performance.now();
     const step = (now) => {
       const progress = Math.min((now - start) / duration, 1);
@@ -90,42 +91,25 @@ const IS_ADMIN = new URLSearchParams(window.location.search).has('admin');
     // GoatCounter Settings > Site. Renders a count into a hidden probe element,
     // then we read the number and feed it into the animated UI.
 
-    // Create an off-screen probe for GoatCounter to render its widget into.
-    // Must NOT be display:none — GoatCounter won't render into hidden elements.
-    const probe = document.createElement("div");
-    probe.style.cssText = "position:fixed;top:-9999px;left:-9999px;visibility:hidden;pointer-events:none;";
-    document.body.appendChild(probe);
-
-    // Poll until count.js has loaded and visit_count() is available (it loads async)
-    var attempts = 0;
-    var t = setInterval(function () {
-      attempts++;
-      if (window.goatcounter && window.goatcounter.visit_count) {
-        clearInterval(t);
-
-        // Pass the DOM element directly — GoatCounter appends its widget HTML here
-        window.goatcounter.visit_count({ append: probe });
-
-        // GoatCounter renders: <strong>1,234</strong> inside the widget
-        setTimeout(function () {
-          var strong = probe.querySelector("strong");
-          var raw = strong ? strong.textContent : "";
-          var count = parseInt(raw.replace(/[^0-9]/g, ""), 10) || 0;
-          probe.remove();
-          renderUI(count);
-        }, 2500); // 2.5s — enough for GoatCounter to fetch + render
-
-      } else if (attempts > 100) {
-        // count.js never loaded after ~10 seconds — show dashboard link instead
-        clearInterval(t);
-        probe.remove();
+    // Direct fetch to GoatCounter's counter API.
+    // CORS is allowed when "Allow adding visitor counts" is enabled in settings.
+    fetch("https://selete-portfolio.goatcounter.com/counter/%2F.json")
+      .then(function(r) {
+        if (!r.ok) throw new Error("HTTP " + r.status);
+        return r.json();
+      })
+      .then(function(data) {
+        // count comes as a formatted string e.g. "1,234" — strip commas
+        var count = parseInt((data.count || "0").replace(/,/g, ""), 10);
+        renderUI(count);
+      })
+      .catch(function(err) {
+        // Fetch blocked or failed — link directly to dashboard instead
+        console.warn("GoatCounter fetch failed:", err);
         var badge = document.getElementById("visitorBadge");
-        if (badge) {
-          badge.innerHTML = '<a href="https://selete-portfolio.goatcounter.com" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline">Open GoatCounter dashboard →</a>';
-        }
+        if (badge) badge.innerHTML = '<a href="https://selete-portfolio.goatcounter.com" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline">Open GoatCounter dashboard →</a>';
         renderUI(0);
-      }
-    }, 100);
+      });
   }
 
   if (document.readyState === "loading") {
