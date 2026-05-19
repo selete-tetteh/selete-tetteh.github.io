@@ -90,36 +90,35 @@ const IS_ADMIN = new URLSearchParams(window.location.search).has('admin');
     // GoatCounter Settings > Site. Renders a count into a hidden probe element,
     // then we read the number and feed it into the animated UI.
 
-    // Create a hidden probe element for GoatCounter to write into
-    const probe = document.createElement("span");
-    probe.id = "gc-probe";
-    probe.style.display = "none";
+    // Create an off-screen probe for GoatCounter to render its widget into.
+    // Must NOT be display:none — GoatCounter won't render into hidden elements.
+    const probe = document.createElement("div");
+    probe.style.cssText = "position:fixed;top:-9999px;left:-9999px;visibility:hidden;pointer-events:none;";
     document.body.appendChild(probe);
 
-    // Poll until count.js has loaded and visit_count is available
+    // Poll until count.js has loaded and visit_count() is available (it loads async)
     var attempts = 0;
     var t = setInterval(function () {
       attempts++;
       if (window.goatcounter && window.goatcounter.visit_count) {
         clearInterval(t);
 
-        window.goatcounter.visit_count({
-          append: "#gc-probe",
-          path: location.pathname || "/"
-        });
+        // Pass the DOM element directly — GoatCounter appends its widget HTML here
+        window.goatcounter.visit_count({ append: probe });
 
-        // Give GoatCounter a moment to write the number into the probe
+        // GoatCounter renders: <strong>1,234</strong> inside the widget
         setTimeout(function () {
-          var raw = (probe.textContent || "").replace(/[^0-9]/g, "");
-          var count = parseInt(raw, 10) || 0;
-          document.body.removeChild(probe);
+          var strong = probe.querySelector("strong");
+          var raw = strong ? strong.textContent : "";
+          var count = parseInt(raw.replace(/[^0-9]/g, ""), 10) || 0;
+          probe.remove();
           renderUI(count);
-        }, 1200);
+        }, 2500); // 2.5s — enough for GoatCounter to fetch + render
 
-      } else if (attempts > 80) {
-        // count.js never loaded after ~8 seconds — fall back to dashboard link
+      } else if (attempts > 100) {
+        // count.js never loaded after ~10 seconds — show dashboard link instead
         clearInterval(t);
-        document.body.removeChild(probe);
+        probe.remove();
         var badge = document.getElementById("visitorBadge");
         if (badge) {
           badge.innerHTML = '<a href="https://selete-portfolio.goatcounter.com" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline">Open GoatCounter dashboard →</a>';
