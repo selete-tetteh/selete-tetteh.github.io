@@ -19,8 +19,8 @@ git add .
 TIMESTAMP=$(date "+%Y-%m-%d %H:%M")
 git commit -m "Update portfolio — $TIMESTAMP"
 
-# Push to GitHub
-git push origin main 2>/dev/null || git push origin master 2>/dev/null || git push -u origin main
+# Push to GitHub (force ensures local version always wins)
+git push origin main --force 2>/dev/null || git push origin master --force 2>/dev/null || git push -u origin main --force
 
 echo ""
 echo "✅ Done! Your site will be live in ~60 seconds at:"

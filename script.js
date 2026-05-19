@@ -1,6 +1,6 @@
 /* ============================================================
    SELETE PORTFOLIO — script.js
-   - Visitor tracking (localStorage)
+   - Visitor tracking (GoatCounter — real global count)
    - Admin mode via ?admin URL param (owner-only counter view)
    - Scroll reveal animations
    - Project tag filtering
@@ -13,47 +13,26 @@
 // The visitor counter section & hero badge are hidden from public visitors.
 // To see them, visit your site with ?admin at the end of the URL:
 //   e.g.  https://selete-tetteh.github.io?admin
+// Admin visits are NOT counted (GoatCounter no_onload set in index.html)
 const IS_ADMIN = new URLSearchParams(window.location.search).has('admin');
 
-// ── VISITOR COUNTER ──────────────────────────────────────────
+// ── VISITOR COUNTER (GoatCounter — real global count) ────────
 (function initVisitorCounter() {
-  const COUNT_KEY = "san_visit_count";
   const FIRST_KEY = "san_first_visit";
-  const LOG_KEY = "san_visit_log";
 
-  // Read existing count — only increment for real (non-admin) visitors
-  let count;
-  if (IS_ADMIN) {
-    // Admin view: just read the current count, don't touch it
-    count = parseInt(localStorage.getItem(COUNT_KEY) || "0", 10);
-  } else {
-    // Real visitor: increment and save
-    count = parseInt(localStorage.getItem(COUNT_KEY) || "0", 10) + 1;
-    localStorage.setItem(COUNT_KEY, count);
-
-    // Record first visit date
-    if (!localStorage.getItem(FIRST_KEY)) {
-      localStorage.setItem(FIRST_KEY, new Date().toISOString());
-    }
-
-    // Append to visit log (max 100 entries)
-    try {
-      let log = JSON.parse(localStorage.getItem(LOG_KEY) || "[]");
-      log.push({ time: new Date().toISOString(), visit: count });
-      if (log.length > 100) log = log.slice(-100);
-      localStorage.setItem(LOG_KEY, JSON.stringify(log));
-    } catch (_) { }
+  // Record first local visit date as a personal reference
+  if (!IS_ADMIN && !localStorage.getItem(FIRST_KEY)) {
+    localStorage.setItem(FIRST_KEY, new Date().toISOString());
   }
 
-  // Format first visit date
   const firstISO = localStorage.getItem(FIRST_KEY);
   const firstDate = firstISO
     ? new Date(firstISO).toLocaleDateString("en-GB", { month: "long", day: "numeric", year: "numeric" })
     : "—";
 
-  // Animate count up
+  // Animate a number counting up smoothly
   function animateCount(el, target, duration = 1500) {
-    if (!el) return;
+    if (!el || !target) return;
     const start = performance.now();
     const step = (now) => {
       const progress = Math.min((now - start) / duration, 1);
@@ -65,39 +44,34 @@ const IS_ADMIN = new URLSearchParams(window.location.search).has('admin');
     requestAnimationFrame(step);
   }
 
-  function setVisitorUI() {
-    // Show visitor section only in admin mode
-    const visitorSection = document.getElementById('visitors');
+  function renderUI(count) {
+    // Hide counter sections from public — show only in admin mode
+    const visitorSection = document.getElementById("visitors");
     const visitorNavLink = document.querySelector('a[href="#visitors"]');
-    if (visitorSection) visitorSection.style.display = IS_ADMIN ? '' : 'none';
-    if (visitorNavLink && !IS_ADMIN) visitorNavLink.parentElement.style.display = 'none';
+    if (visitorSection) visitorSection.style.display = IS_ADMIN ? "" : "none";
+    if (visitorNavLink && !IS_ADMIN) visitorNavLink.parentElement.style.display = "none";
 
-    // Show hero badge only in admin mode
-    const heroBadge = document.querySelector('.hero-badge');
-    if (heroBadge) heroBadge.style.display = IS_ADMIN ? '' : 'none';
+    const heroBadge = document.querySelector(".hero-badge");
+    if (heroBadge) heroBadge.style.display = IS_ADMIN ? "" : "none";
 
-    // Stat in hero — show dash if not admin
-    const statEl2 = document.getElementById('statVisitors');
-    if (statEl2 && !IS_ADMIN) { statEl2.textContent = '—'; }
+    const statEl2 = document.getElementById("statVisitors");
+    if (statEl2 && !IS_ADMIN) statEl2.textContent = "—";
 
-    if (!IS_ADMIN) return; // don't set counter text for public
-    // Hero badge
+    if (!IS_ADMIN) return; // public sees nothing below this line
+
+    // ── Admin view: show real global count ──
     const badge = document.getElementById("visitorBadge");
     if (badge) badge.textContent = `${count.toLocaleString()} visitor${count !== 1 ? "s" : ""} so far`;
 
-    // Stat in hero
     const statEl = document.getElementById("statVisitors");
     if (statEl) animateCount(statEl, count, 1200);
 
-    // Big counter section
     const countEl = document.getElementById("visitorCount");
     if (countEl) animateCount(countEl, count, 1800);
 
-    // First visit date
     const dateEl = document.getElementById("firstVisitDate");
     if (dateEl) dateEl.textContent = firstDate;
 
-    // Progress bar (visual only — fills proportionally up to 1000)
     const fillEl = document.getElementById("visitorFill");
     if (fillEl) {
       const percent = Math.min((count / 1000) * 100, 100);
@@ -105,11 +79,32 @@ const IS_ADMIN = new URLSearchParams(window.location.search).has('admin');
     }
   }
 
-  // Run after DOM ready
+  function init() {
+    if (!IS_ADMIN) {
+      renderUI(0); // just hide counter sections for public
+      return;
+    }
+
+    // Fetch real global count from GoatCounter API
+    fetch("https://selete-portfolio.goatcounter.com/counter/%2F.json")
+      .then(r => r.json())
+      .then(data => {
+        // GoatCounter returns count as a formatted string e.g. "1,234"
+        const count = parseInt((data.count || "0").replace(/,/g, ""), 10);
+        renderUI(count);
+      })
+      .catch(() => {
+        // API unreachable — prompt to check GoatCounter dashboard directly
+        const badge = document.getElementById("visitorBadge");
+        if (badge) badge.textContent = "Check goatcounter.com for live stats";
+        renderUI(0);
+      });
+  }
+
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", setVisitorUI);
+    document.addEventListener("DOMContentLoaded", init);
   } else {
-    setVisitorUI();
+    init();
   }
 })();
 

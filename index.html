@@ -338,6 +338,16 @@
   <!-- Toast -->
   <div class="toast" id="toast"></div>
 
+
+  <!-- GoatCounter: skip tracking on admin visits -->
+  <script>
+    if (new URLSearchParams(window.location.search).has('admin')) {
+      window.goatcounter = { no_onload: true };
+    }
+  </script>
+  <script data-goatcounter="https://selete-portfolio.goatcounter.com/count"
+          async src="//gc.zgo.at/count.js"></script>
+
   <script src="script.js"></script>
 </body>
 </html>
