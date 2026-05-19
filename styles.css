@@ -628,6 +628,16 @@ button { cursor: pointer; font-family: inherit; border: none; outline: none; }
   margin-bottom: 10px;
 }
 
+.visitor-count-link {
+  display: block;
+  text-decoration: none;
+  transition: transform var(--transition), filter var(--transition);
+}
+.visitor-count-link:hover {
+  transform: scale(1.04);
+  filter: brightness(1.15);
+}
+
 .visitor-label {
   font-size: 1.1rem;
   color: var(--text);
